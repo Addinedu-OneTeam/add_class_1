@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- For CSS -->
+    <link rel="stylesheet" th:href="@{/css/swiper.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/contents.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--favicon-->
+    <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+    <!--google font-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-------------------- //header (로그인 상태에 따라 다른 헤더 프래그먼트)-------------------------->
+<!--꼭 두줄로 해야함 한줄로 하면 안먹음!!-->
+<div th:if="${loginUser == null}" >
+    <div th:replace="/fragments/header_login :: header_login"></div>
+</div>
+<div th:if="${loginUser != null}">
+    <div th:replace="/fragments/header_logout :: header_logout"></div>
+</div>
+<!-------------------------------------- header// ------------------------------------------->
+
+<div class="content">
+    <div class="left-content">
+        <br>
+        <img src="/img/logo.png" alt="logo" id="logo" width="80%">
+
+        <h1>요즘 플래너 뭐써??<br>난 One Planner 써!!<br></h1>
+        <div th:if="${loginUser == null}">
+            <a href="/web/login"><button class="button">지금 체험해 보세요!</button></a>
+        </div>
+        <div th:if="${loginUser != null}">
+            <a href="/web/main"><button class="button">나의 스케쥴 보기</button></a>
+        </div>
+    </div>
+<!--    <div class="right-content">-->
+        <!-- Slider main container -->
+        <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <!--            <img th:src="@{/img/month2.png}" alt="Month Image">-->
+                <!--            <img th:src="@{/img/week2.png}" alt="Week Image">-->
+                <!--            <img th:src="@{/img/day2.png}" alt="Day Image">-->
+                <div class="swiper-slide">
+                                    <img src="img/month.png">
+                </div>
+                <div class="swiper-slide">
+                                    <img src="img/week.png">
+                </div>
+                <div class="swiper-slide">
+                                    <img src="img/day.png">
+                </div>
+            </div>
+        </div>
+<!--    </div>-->
+</div>
+<!-- For JavaScript 자바스크립트 div 마치고 적용됨-->
+<script th:src="@{/js/main.js}"></script>
+<!-------------------------------- // footer ----------------------------------------->
+<div th:replace="/fragments/footer :: footer"></div>
+<!-------------------------------- footer // ------------------------------------------->
+</body>
+</html>

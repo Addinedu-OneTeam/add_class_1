@@ -1,0 +1,66 @@
+#timeInputs {
+  transition: opacity 0.5s ease; /* 변화에 트랜지션 적용 (선택 사항) */
+}
+
+#timeInputs.blurred {
+  opacity: 0.5; /* 음영 처리된 가시성 */
+  pointer-events: none; /* 이벤트 무시 (선택 사항) */
+}
+
+/* 선택되기 전의 배경색을 하얀색으로 지정 */
+#startTime, #endTime, #repeat {
+    background-color: white !important;
+    color: black !important;
+}
+
+
+/* 선택 중일 때의 배경색 */
+#startTime.selected-option,
+#endTime.selected-option {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+/* 선택된 후의 배경색을 검정색으로 지정 */
+#startTime option, #endTime option, #repeat option {
+    background-color: rgba(0,0,0,0.8);
+    color: white; /* 선택된 옵션의 텍스트 색상도 변경 */
+}
+
+/* 시간설정부분 css */
+#startTime, #endTime, #repeat {
+  display: inline-block;
+  overflow-y: scroll;
+  border: 1px solid black;
+  box-sizing: border-box;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 스크롤바 설정 */
+#startTime::-webkit-scrollbar,
+#endTime::-webkit-scrollbar,
+#repeat::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* 스크롤바 막대 설정 */
+#startTime::-webkit-scrollbar-thumb,
+#endTime::-webkit-scrollbar-thumb,
+#repeat::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 1);
+  /* 스크롤바 둥글게 설정 */
+  border-radius: 10px;
+  border: 7px solid rgba(0, 0, 0, 0.8);
+}
+
+/* 스크롤바 뒷 배경 설정 */
+#startTime::-webkit-scrollbar-track,
+#endTime::-webkit-scrollbar-track,
+#repeat::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#repeat {
+  border-radius: 5px;
+}

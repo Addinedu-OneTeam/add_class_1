@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+<!--<div class="header">365-Day Schedule Management Program</div>-->
+
+<!-------------------- //header (로그인 상태에 따라 다른 헤더 프래그먼트)-------------------------->
+<!--꼭 두줄로 해야함 한줄로 하면 안먹음!!-->
+<div th:if="${loginUser == null}" >
+    <div th:replace="/fragments/header_login :: header_login"></div>
+</div>
+<div th:if="${loginUser != null}">
+    <div th:replace="/fragments/header_logout :: header_logout"></div>
+</div>
+<!-------------------------------------- header// ------------------------------------------->
+
+    <div class="entire" id="loginForm">
+        <form>
+            <a href="/"><img src="../img/logo.png" alt="logo" id="logo" width="50%" ></a>
+            <div class="sign-in">
+                <div class="sign-box">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" placeholder="Email@domain.com">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Password">
+
+                    <div id="loginError" style="color: red;"></div>
+
+                    <div class="password-update-text">
+                        <span>비밀번호를 잊어버리셨나요?</span>
+                        <a href="/web/passwordUpdate">비밀번호 찾기</a>
+                    </div>
+                    <button>Login</button>
+                    <div class="sign-up-text">
+                        <span>아직도 회원이 아니세요?</span>
+                        <a href="/web/signup">지금 바로 시작!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <p>or</p>
+            </div>
+<!--            <div class="social-login">-->
+<!--                <a href="#"><i><img src="../img/google.png" alt="google login" id="google"></i></a>-->
+<!--                <a href="#"><i><img src="../img/naver.png" alt="naver login" id="naver"></i></a>-->
+<!--                <a href="#"><i><img src="../img/kakao.png" alt="kakao login" id="kakao"></i></a>-->
+<!--            </div>-->
+            <div class="social-login">
+                <a href="http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:8080&mode=login"><i><img src="../img/google.png" alt="google login" id="google"></i></a>
+<!--                <a href="http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:8080&mode=unlink">-->
+<!--                    <button type="button">Google Unlink</button>-->
+                </a>
+                <a href="http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:8080&mode=login"><i><img src="../img/naver.png" alt="naver login" id="naver"></i></a>
+<!--                <a href="http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:8080&mode=unlink">-->
+<!--                    <button type="button">Naver Unlink</button>-->
+                </a>
+                <a href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:8080&mode=login"><i><img src="../img/kakao.png" alt="kakao login" id="kakao"></i></a>
+<!--                <a href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:8080&mode=unlink">-->
+<!--                    <button type="button">Kakao Unlink</button>-->
+                </a>
+            </div>
+        </form>
+    </div>
+<script>
+    function loginErrorMassage(){
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var loginError = document.getElementById('loginError');
+        loginError.style.fontWeight = 'bold';
+        loginError.style.fontSize = '12px';
+        if(email === "" || password === ""){
+            loginError.textContent = " 이메일 또는 비밀번호를 입력해주세요.";
+            return false;
+        }else{
+            loginError.textContent = "";
+            return true;
+        }
+    }
+    $(document).ready(function() {
+        var loginError = document.getElementById('loginError');
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault(); // 폼 기본 제출 방지
+
+            if (!loginErrorMassage()) {
+                return;
+            }
+            var loginData = {
+                email: $('#email').val(),
+                password: $('#password').val()
+            };
+
+            $.ajax({
+                url: '/api/user/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(loginData),
+                success: function(response) {
+                    console.log(loginData);
+                    window.location.href = '/';
+                    // if (response.success) {
+                    //     window.location.href = '/main'; // 메인 페이지로 리다이렉트
+                    // } else {
+                    //     // 로그인 실패 처리
+                    //     alert('로그인 실패');
+                    // }
+                },
+                error: function(xhr,textStatus,error) {
+                    if (xhr.status === 401) {
+                        loginError.textContent = "이메일 또는 비밀번호가 일치하지 않습니다.";
+                    } else {
+                        loginError.textContent = "오류로 인하여 로그인에 실패하였습니다 다시 시도해주세요.";
+                    }
+                }
+            });
+        });
+    });
+</script>
+<!-------------------------------- // footer ----------------------------------------->
+<div th:replace="/fragments/footer :: footer"></div>
+<!-------------------------------- footer // ------------------------------------------->
+</body>
+</html>

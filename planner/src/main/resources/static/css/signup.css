@@ -1,0 +1,147 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    height: 50%;
+    border-radius: 18px;
+    background-color: white;
+    margin: 1px auto;
+    padding: 70px 120px 50px;
+}
+form > h1,
+form > p {
+    text-align: center;
+}
+form > h1 {
+    font-size: 40px;
+    font-weight: bold;
+}
+.sign-up {
+    text-align: center;
+    width: 100%;
+}
+.sign-up button {
+    width: 70%;
+    height: 50px;
+    border-radius: 5px;
+    background-color: black;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+}
+.sign-up button:disabled {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+}
+.sign-up > div {
+    position: relative;
+    text-align: center;
+}
+.sign-up > div input{
+    width: 70%;
+    height: 40px;
+    margin: 10px 0;
+    border: 1px solid dimgray;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 0 1.4em;
+}.textLabel {
+     position: absolute;
+     padding: 1px 1px;
+     left: 100px;
+     background-color: white;
+     color: gray;
+     font-size: 12px; font-weight: bold;
+     border-radius: 100px;
+ }.sign-up > div span {
+      color: #da4841;
+  }
+#checkDuplicateButton, #verifyEmailButton{
+    position: absolute;
+    right: 92px;
+    top: 74px;
+    width: 50px;
+    height: 32px;
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+}
+#verifyCodeButton{
+    right: 92px;
+    top: 150px;
+    width: 50px;
+    height: 32px;
+    border: none;
+    position: absolute;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+}
+#passwordImage {
+    width: 27px;
+    height: 27px;
+    cursor: pointer;
+}
+#purpose, #gender {
+    width: 70%;
+    height: 40px;
+    margin: 10px 0;
+    border: 1px solid dimgray;
+    border-radius: 5px;
+    padding: 0 1.4em;
+    appearance: none; /* 기본 스타일 제거 */
+    background: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23666" d="M8.25 12.5l3.5-3.5 3.5 3.5h-7z"/></svg>') no-repeat right 1rem center/1.5em;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Hover 스타일 */
+#purpose:hover, #gender:hover {
+    border-color: #aaa;
+}
+
+/* Focus 스타일 */
+#purpose:focus, #gender:focus {
+    outline: none;
+    border-color: dodgerblue;
+    box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+}
+#timerDisplay {
+    /*    text-align: left;
+        padding-left: 60px;
+        margin-bottom: 4px;
+        display: none;
+        font-size: 13px;*/
+    position: absolute;
+    top: 160px;
+    right: 156px;
+    font-size: 12px;
+}
+
+.password-field {
+    position: relative;
+}
+
+.show-password-wrapper {
+    position: absolute;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 1px;
+    top: -42px;
+    right: 126px;
+}
+
+.show-password-checkbox {
+    visibility: hidden;
+}
+
+.show-password-label {
+    cursor: pointer;
+}
