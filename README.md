@@ -127,6 +127,7 @@ com.example
 ```
 
 ### Wiki link (or Homepage link)
+
 - 프로젝트 Wiki: [One - Planner Wiki](https://example.com/one-planner/wiki)
 - 홈페이지 링크: [One - Planner Home](https://example.com/one-planner)
 
