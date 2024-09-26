@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>header_login</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+</head>
+<body>
+
+<div th:fragment="header_login">
+
+    <div class="header">
+        만나서 반가워요, One Planner로 일상을 업그레이드하세요!
+
+        <div id="loginMenuContainer">
+            <a class="headerA" href="/web"><i class="fa-solid fa-house"></i></a>&nbsp;&nbsp;
+            <a class="headerA" href="/web/login"><i class="fa-solid fa-power-off"></i></a>
+            <button class="userButton"><i class="fa-solid fa-user" id="loginMenu"></i></button>
+        </div>
+
+        <script>
+            // 메뉴 클릭시 메뉴 토글
+            // document.getElementById("loginClickableImage").addEventListener("click", function() {
+            //     var loginMenu = document.getElementById("loginMenu");
+            //     loginMenu.style.display = loginMenu.style.display === "block" ? "none" : "block";
+            // });
+
+            // 문서 클릭시 메뉴 숨김
+            document.addEventListener("click", function(event) {
+                var loginMenu = document.getElementById("loginMenu");
+                var loginClickableImage = document.getElementById("loginClickableImage");
+                var target = event.target;
+
+                // 메뉴가 표시되어 있고, 클릭된 요소가 메뉴나 이미지가 아닌 경우 메뉴 숨김
+                if (loginMenu.style.display === "block" && target !== loginMenu && target !== loginClickableImage) {
+                    loginMenu.style.display = "none";
+                }
+            });
+
+            // CSS 파일 동적 추가
+            function loadCSS(href) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+
+            // JavaScript 파일 동적 추가
+            // function loadJS(src) {
+            //     const script = document.createElement('script');
+            //     script.src = src;
+            //     script.async = false; // 필요에 따라 true로 설정
+            //     document.body.appendChild(script);
+            // }
+
+            // 사용 예
+            loadCSS('/css/header.css');
+
+            // loadJS('/js/header.js');
+        </script>
+
+    </div>
+
+    <!--clickableImage-->
+
+</div>
+</body>
+</html>

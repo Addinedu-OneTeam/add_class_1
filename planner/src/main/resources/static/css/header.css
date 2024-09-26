@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+
+    padding: 10px 0;
+    z-index: 1000;
+    margin-right: 30px;
+    height: 70px;   /* 헤더높이 */
+    font-size: 24px;
+    line-height: 70px;
+
+}
+.content {
+    margin-top: 60px;
+    padding: 20px;
+    min-height: 100vh; 		  /* 뷰포트의 높이에 맞춰 최소 높이 설정 */
+    padding-bottom: 100px;    /* 푸터 높이만큼 여백을 줌. 푸터의 높이에 따라 조절해야 함. */
+}
+
+/* 이미지를 한번클릭하면 바로밑에 메뉴가 세로로 뜨며 마우스 오버시 색상변경*/
+#loginMenuContainer, #logoutMenuContainer {
+    position: relative; 		/* 컨테이너 위치 설정 */
+    display: flex;
+    float: right; 				/* 오른쪽으로 부동 설정 */
+    margin-right: 50px;  		/* 오른쪽 여백 */
+    top: 0%;
+    text-align: right;
+}
+#loginMenu, #logoutMenu {
+    display: none; 				   /* 메뉴를 기본적으로 숨김 */
+    position: absolute; 		   /* 이미지 바로 아래에 메뉴를 위치시킴 */
+    top: 70%;  				       /* 메뉴를 이미지 바로아래 위치 간격 */
+    transform: translateX(-10%);   /* 메뉴를 왼쪽으로 반 폭만큼 이동시켜 중앙에 위치시킴*/
+    width: 130px;
+    color: black;
+    background-color: white;
+    text-align: center;
+    font-size: 15px;
+    outline: 1px solid black;       /* 아웃라인 */
+
+}
+.menu-item {
+    padding: 1px 0; 				/* 메뉴 항목패딩*/
+    border-top: 0px solid black;    /* 메뉴 구분선 */
+    line-height: 40px;
+    color: black;
+}
+
+.menu-item a {
+    color: black;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background-color: lightgray; 		/* 마우스 오버시 메뉴배경색 변경 */
+    color: lightgray; 					/* 마우스 오버시 메뉴글자색 변경 */
+}
+i{
+    color: white;
+    font-size: 36px;
+}
+.userButton{
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 1;
+    bottom: 4px;
+    position: relative;
+}
+#logoutMenuContainer a {
+    margin-left: 23px;
+}
+#loginMenuContainer a{
+    margin-right: 8px;
+}

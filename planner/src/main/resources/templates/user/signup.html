@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/signup.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+<!-------------------- //header (로그인 상태에 따라 다른 헤더 프래그먼트)-------------------------->
+<!--꼭 두줄로 해야함 한줄로 하면 안먹음!!-->
+<div th:if="${loginUser == null}" >
+    <div th:replace="/fragments/header_login :: header_login"></div>
+</div>
+<div th:if="${loginUser != null}">
+    <div th:replace="/fragments/header_logout :: header_logout"></div>
+</div>
+<!-------------------------------------- header// ------------------------------------------->
+<!--<div class="header">365-Day Schedule Management Program</div>-->
+<div class="entire">
+    <form id="sign-up-form">
+        <!--    <form method="post" th:action="@{/api/user}" th:object="${user}">-->
+        <img src="../img/logo.png" alt="logo" id="logo" width="50%"></a>
+        <h3>회원가입</h3>
+        <h6>서비스 가입 후 무료로 혜택을 받아보시오.....</h6>
+        <div class="sign-up">
+            <div class="sign-box">
+                <div>
+                    <input type="text" id="username" placeholder="이름을 입력하세요." required>
+                    <label for="username" class="textLabel" ><span>*</span> 이름</label>
+                </div>
+                <div>
+                    <input type="email" id="fullEmail" placeholder="example@Example.com" required>
+                    <button type="button" id="checkDuplicateButton">중복</button>
+                    <button type="button" id="verifyEmailButton" style="display: none;">인증</button>
+                    <label for="fullEmail" class="textLabel"><span>*</span> 이메일</label>
+                </div>
+                <div id="emailError"></div>
+                <div id="verificationSection" style="display: none">
+                    <input type="text" id="verificationCode" placeholder="인증번호를 입력하세요." required>
+                    <button type="button" id="verifyCodeButton" >확인</button>
+                    <label for="verificationCode" class="textLabel"><span>*</span> 인증하기</label>
+                    <div id="timerDisplay" style="display: none;">
+                        <span id="timer"></span>
+                    </div>
+                </div>
+
+
+       <!--         <div class="password-field">
+                    <input type="password" id="password" placeholder="영문,숫자,특수기호 10~16자리" required>
+                    <label for="password" class="textLabel"><span>*</span> 비밀번호</label>
+                    <input type="checkbox" id="showPassword" onchange="togglePassword()" style="visibility: hidden;">
+                    <label for="showPassword" id="showPasswordLabel">
+                    <img src="../img/password.png" alt="비밀번호 숨김" id="passwordImage">
+                    </label>
+                </div>
+                -->
+                <div class="password-field">
+                    <input type="password" id="password" placeholder="영문,숫자,특수기호 10~16자리" required>
+                    <label for="password" class="textLabel"><span>*</span> 비밀번호</label>
+                    <div class="show-password-wrapper">
+                        <input type="checkbox" id="showPassword" onchange="togglePassword()" class="show-password-checkbox">
+                        <label for="showPassword" class="show-password-label">
+                            <img src="../img/password.png" alt="비밀번호 숨김" id="passwordImage">
+                        </label>
+                    </div>
+                </div>
+
+                <div id="passwordError" style="color: red;"></div>
+                <div>
+                    <input type="text" id="phone" placeholder="입력시 ' - '을 자동으로 생성" maxlength="13">
+                    <label for="phone" class="textLabel"><span>*</span> 휴대폰</label>
+                </div>
+                <div id="phoneError" style="color: red;"></div>
+                <div id="birthInput">
+                    <input type="hidden" id="fullBirthday">
+                    <input type="date" id="birthdate" max="2000-01-01"min="1930-01-01" >
+                    <label for="birthdate" class="textLabel"><span>*</span> 생년월일</label>
+                </div>
+                <!--<div id="birthdayError" style="color: red;"></div>-->
+                <div id="birthdateError" style="color: red;"></div>
+
+                <div id="purposeDiv">
+                    <label for="purpose" class="textLabel"><span>*</span> 사용목적</label>
+                    <select id="purpose">
+                        <option value="Personal">개인용</option>
+                        <option value="Academic">학업용</option>
+                        <option value="Business">기업용</option>
+                    </select>
+                </div>
+                <div class="gender-selection">
+                    <label for="gender" class="textLabel"><span>*</span> 성별</label>
+                    <select id="gender">
+                        <option value="Male">남성</option>
+                        <option value="Female">여성</option>
+                        <option value="Other">기타</option>
+                    </select>
+                </div>
+                <div id="genderError" style="color: red;"></div>
+                <button type="button" id="submitBtn" onclick="submitSignUpForm();" disabled>가입하기</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    var dateInput = document.getElementById('birthdate');
+    dateInput.max = getCurrentDate();
+    var isRunning = false;
+    // 인증 이메일 보내기
+    document.getElementById('verifyEmailButton').addEventListener('click', function() {
+        this.disabled = true;
+        document.getElementById('verifyEmailButton').style.backgroundColor = 'gray';
+        // 이메일 인증 버튼 클릭 시 타이머 시작
+        var fiveMinutes = 60 * 3; // 3분
+        var display = document.getElementById('timer');
+        startTimer(fiveMinutes, display);
+        document.getElementById('verificationSection').style.display = 'block'; // 인증 코드 입력창 표시
+        document.getElementById("timerDisplay").style.display = "block";
+        alert('인증번호가 전송 되었습니다.')
+        var email = document.getElementById('fullEmail').value;
+        axios.post('/verify-email', { email: email })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    });
+
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        if (isRunning) {
+            clearInterval(window.timer);
+        }
+        isRunning = true;
+
+        window.timer = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+            display.style.color = '#A4A4A4';
+            if (--timer < 0) {
+                clearInterval(window.timer);
+                display.textContent = "시간 초과";
+                isRunning = false;
+                document.getElementById("verifyEmailButton").disabled = false;
+                document.getElementById('verifyEmailButton').style.backgroundColor = 'black';
+                document.getElementById("timerDisplay").style.display = "none";
+                document.getElementById("verificationSection").style.display = "none";
+                alert('입력 시간이 초과되었습니다, 다시 시도해주세요.');
+            }
+        }, 1000);
+    }
+
+    // 인증 코드 확인 부분
+    document.getElementById('verifyCodeButton').addEventListener('click', function() {
+        // 인증 완료 후 또는 타이머 종료 후 버튼을 다시 활성화
+        document.getElementById('verifyEmailButton').disabled = false;
+        var emailError = document.getElementById("emailError");
+        var email = document.getElementById('fullEmail').value;
+        var code = document.getElementById('verificationCode').value;
+        emailError.style.fontWeight = 'bold';
+        emailError.style.fontSize = '12px';
+        axios.post('/verification-email-sent', { email: email, verificationCode: code })
+            .then(function (response) {
+                if (response.data.valid) {
+                    clearInterval(window.timer); // 타이머 중지
+                    document.getElementById('timer').textContent = ""; // 타이머 UI 초기화
+                    document.getElementById('verificationSection').style.display = 'none';
+                    document.getElementById('submitBtn').disabled = false;
+                    alert('인증이 완료 되었습니다.');
+                    emailError.textContent = "☑ 인증이 완료 되었습니다."
+                    emailError.style.color = "blue";
+                    document.getElementById('verifyEmailButton').disabled = true;
+                    document.getElementById('fullEmail').disabled = true;
+                    document.getElementById('checkDuplicateButton').disabled = true;
+                } else {
+                    alert('인증번호가 올바르지 않습니다.');
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    });
+
+/*    function disableverifyEmailButton() {
+
+        $("#verifyEmailButton").prop("disabled", true);
+    }*/
+
+    //이메일 조건 및 중복확인
+    document.getElementById('checkDuplicateButton').addEventListener('click', function(event) {
+        var fullEmail = $("#fullEmail").val();
+        fullEmail = fullEmail.toLowerCase();
+        var emailError = document.getElementById("emailError");
+        var emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
+        emailError.style.fontWeight = 'bold';
+        emailError.style.fontSize = '12px';
+        if (emailRegex.test(fullEmail)) {
+            $.ajax({
+                type: "GET",
+                url: "/api/user/checkDuplicateEmail",
+                data: {fullEmail: fullEmail},
+                success: function (response) {
+                    if (!response) {
+                        emailError.textContent = "이미 가입된 이메일입니다."
+                        emailError.style.color = "red";
+                    } else {
+                        emailError.textContent = "✔ 사용 가능한 이메일입니다."
+                        emailError.style.color = "green";
+                        document.getElementById('verifyEmailButton').style.display = "block"; // 이메일 인증 버튼 표시
+                        document.getElementById('checkDuplicateButton').style.display = "none"; // 중복 확인 버튼 숨김
+                    }
+                },
+                error: function (error) {
+                    console.error("Error checking email:", error);
+                }
+            });
+        }else if(fullEmail === "") {
+            emailError.textContent = "이메일을 입력해주세요."
+            emailError.style.color = "red";
+        }
+    });
+
+    //생년월일 무브
+/*    function moveToNextInput(currentInput, nextInputId) {
+        var inputValue = currentInput.value;
+        var maxLength = parseInt(currentInput.getAttribute("maxlength"));
+
+        if (inputValue.length === maxLength) {
+            var nextInput = document.getElementById(nextInputId);
+            if (nextInput) {
+                nextInput.focus();
+            }
+        }
+    }*/
+
+
+    /*function combineBirthDay() {
+        var birthYear = document.getElementById('birth_Year').value;
+        var birthMonth = document.getElementById('birth_Month').value;
+        var birthDay = document.getElementById('birth_Day').value;
+        var birthdayError = document.getElementById("birthdayError");
+        birthdayError.style.fontWeight = 'bold';
+        birthdayError.style.fontSize = '12px';
+        // 입력값이 숫자로 변환 가능한지 확인
+        if (isNaN(birthYear) || isNaN(birthMonth) || isNaN(birthDay)) {
+            birthdayError.textContent = "❌ 올바른 생년월일을 입력하세요.";
+            return false;
+        }
+        // 길이가 1인 1부터 9까지의 값이라면 앞에 0을 붙여줌
+        birthMonth = (birthMonth < 10 && birthMonth.toString().length === 1) ? '0' + birthMonth : birthMonth;
+        birthDay = (birthDay < 10 && birthDay.toString().length === 1) ? '0' + birthDay : birthDay;
+
+        var fullBirthday = birthYear + "-" + birthMonth + "-" + birthDay;
+        console.log(fullBirthday);
+        document.getElementById('fullBirthday').value = fullBirthday.toLowerCase();
+
+        // 생년월일 유효성 검사
+        if (birthYear < 1920 || birthYear > 2024 ||
+            birthMonth < 1 || birthMonth > 12 ||
+            birthDay < 1 || birthDay > 31) {
+            birthdayError.textContent = "❌ 올바른 생년월일을 입력하세요.";
+            return false;
+        } else {
+            birthdayError.textContent = ""; // 오류 메시지 제거
+            return true;
+        }
+    }*/
+    function phoneChecking() {
+        var phone = document.getElementById("phone").value;
+        var phoneError = document.getElementById("phoneError");
+        phoneError.style.fontWeight = 'bold';
+        phoneError.style.fontSize = '12px';
+        if (phone === "") {
+            phoneError.textContent = "핸드폰 번호를 입력해주세요.";
+            return false;
+        } else {
+            phoneError.textContent = "";
+            return true;
+        }
+    }
+    //핸드폰
+    var phoneNumber = document.getElementById("phone");
+    // 유효성검사 전화번호
+    phoneNumber.addEventListener("input", function () {
+        var input = this.value.replace(/[^0-9]/g, ""); // 숫자만 추출
+        var formatted = "";
+        var prefix = "010";
+        // '010'으로 시작하는지 확인
+        if (input.startsWith(prefix)) {
+            if (input.length <= 3) {
+                formatted = input; // '010'만 입력된 경우
+            } else if (input.length <= 7) {
+                formatted = input.substring(0, 3) + "-" + input.substring(3, 7); // 첫 번째 구분자(-) 추가
+            } else {
+                formatted =
+                    input.substring(0, 3) +
+                    "-" +
+                    input.substring(3, 7) +
+                    "-" +
+                    input.substring(7, 11); // 두 번째 구분자(-) 추가
+            }
+        } else {
+            if (input.length <= 3) {
+                formatted = input; // 입력값이 없을 때는 빈 문자열로 설정
+            } else if (input.length <= 4) {
+                formatted = prefix + "-" + input; // 첫 번째 구분자(-) 추가
+            } else {
+                formatted =
+                    prefix + "-" + input.substring(0, 4) + "-" + input.substring(4, 8); // 두 번째 구분자(-) 추가
+            }
+        }
+        this.value = formatted;
+    });
+
+
+
+
+    //비밀번호 숨김
+    function togglePassword() {
+        var passwordInput = document.getElementById("password");
+        var showPasswordCheckbox = document.getElementById("showPassword");
+        if (showPasswordCheckbox.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+    //비밀번호 숨김 이미지 변경
+    function changeImage() {
+        var imgElement = document.getElementById("passwordImage");
+        var isChecked = document.getElementById("showPassword").checked;
+
+        // 체크 여부에 따라 이미지 변경
+        if (isChecked) {
+            imgElement.src = "../img/password.png";
+        } else {
+            imgElement.src = "../img/password2.png";
+        }
+    }
+
+    // 이미지를 클릭했을 때 changeImage 함수 실행
+    document.getElementById("passwordImage").addEventListener("click", changeImage);
+    //생년월일
+    function getCurrentDate() {
+        var currentDate = new Date();
+        var year = currentDate.getFullYear();
+        var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1 해줌
+        var day = ('0' + currentDate.getDate()).slice(-2);
+        return year + '-' + month + '-' + day;
+    }
+    function checkBirthdate() {
+        var birthdateInput = document.getElementById('birthdate');
+        var birthdateError = document.getElementById('birthdateError');
+        birthdateError.style.fontSize = '12px';
+        birthdateError.style.fontWeight = 'bold';
+        if (!birthdateInput.value) {
+            birthdateError.textContent = "생년월일을 선택해주세요.";
+            return false;
+        } else {
+            birthdateError.textContent = "";
+            return true;
+        }
+    }
+
+    function validateGenderSelection() {
+        var genderSelected = document.getElementById("gender");
+        var genderError = document.getElementById("genderError");
+        genderError.style.fontWeight = 'bold';
+        genderError.style.fontSize = '12px';
+        if (!genderSelected) {
+            genderError.textContent = "성별을 선택해주세요."
+            return false;
+        } else{
+            genderError.textContent = ""; // 오류 메시지 제거
+            return true;
+        }
+    }
+
+    function validatePassword() {
+        var passwordInput = document.getElementById("password");
+        var passwordError = document.getElementById("passwordError");
+        passwordError.style.fontWeight = 'bold';
+        passwordError.style.fontSize = '12px';
+        var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,16}$/;
+        if (!passwordPattern.test(passwordInput.value)) {
+            passwordError.textContent = "영문, 숫자, 특수기호 포함 10~16자리 입력.";
+            return false;
+        } else {
+            passwordError.textContent = ""; // 오류 메시지 제거
+            return true;
+        }
+    }
+    function submitSignUpForm() {
+
+        if (!validatePassword()) {
+            return; // 비밀번호가 유효하지 않으면 함수 실행 중단
+        }
+
+        if (!validateGenderSelection()) {
+            return; // 성별이 선택되지 않았으므로 여기서 함수 실행 중단
+        }
+        if (!checkBirthdate()) {
+            return;
+        }
+        if (!phoneChecking()) {
+            return;
+        }
+
+            /*        var genderSelected = document.getElementById()*/
+
+        var userData = {
+            username: document.getElementById('username').value,
+            email: document.getElementById('fullEmail').value,
+            passwordHash: document.getElementById('password').value,
+            purpose: document.getElementById('purpose').value,
+            birthday: document.getElementById('birthdate').value,
+            gender: document.getElementById('gender').value,
+            phone: document.getElementById('phone').value
+        };
+        console.log("phone");
+        // 회원가입 요청
+        axios.post('/api/user', userData)
+            .then(function (response) {
+                console.log("회원가입 성공", response);
+                alert('회원가입 성공!');
+                window.location.href = '/';
+            })
+            .catch(function (error) {
+                console.error("회원가입 오류", error);
+            });
+
+}
+</script>
+<!-------------------------------- // footer ----------------------------------------->
+<div th:replace="/fragments/footer :: footer"></div>
+<!-------------------------------- footer // ------------------------------------------->
+
+</body>
+</html>

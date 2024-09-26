@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+.content {
+    display: flex;
+}
+
+.left-content {
+    width: 35%;
+    padding: 20px;
+    font-size: 15px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+    line-height: 1.6; /* 줄간격 */
+}
+
+.right-content {
+    width: 65%;
+    padding: 20px;
+}
+
+.slideshow-container {
+    max-width: 100%;
+    position: relative;
+    margin: auto;
+}
+
+.mySlides {
+    display: none;
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 2.0s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: white;
+    text-decoration: none;
+    background-image: linear-gradient(to right, #0077CC, #0055AA);  /* 버튼 그라데이션 */
+    border: 1px solid #0055cc;
+    border-radius: 30px;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.button:active {
+    transform: scale(0.95);
+}

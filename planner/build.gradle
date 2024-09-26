@@ -1,0 +1,95 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// log4jdbc
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+	// 새로고침으로 html 갱신
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	
+	// fullcalendar
+	implementation 'org.webjars.npm:fullcalendar:6.1.10'
+	
+	// flatpickr
+	implementation 'org.webjars.npm:flatpickr:4.6.13'
+	
+	// jQuery
+	implementation 'org.webjars:jquery:3.7.1'
+
+	// jQuery UI
+	implementation 'org.webjars:jquery-ui:1.13.1'
+	
+	// bootstrap
+	implementation 'org.webjars:bootstrap:5.3.2'
+
+	// popper
+	implementation 'org.webjars:popper.js:2.11.7'
+	
+	// moment
+	implementation 'org.webjars.npm:moment:2.30.1'
+	
+	// sweetalert2
+	implementation 'org.webjars.npm:sweetalert2:11.10.4'
+
+	// 비밀번호 암호화
+	implementation 'org.springframework.security:spring-security-crypto:6.2.1'
+
+	// Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	//time 안나옴 해결
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	//이메일인증
+//	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	//implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.2'
+
+	// FCM
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

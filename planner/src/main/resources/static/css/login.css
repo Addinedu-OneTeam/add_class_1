@@ -1,0 +1,204 @@
+/*sign-in*/
+.entire {
+    display: flex;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+    height: 50%;
+    border-radius: 18px;
+    background-color: white;
+    margin: 150px auto;
+    padding: 0px 120px 50px;
+}
+form > h1,
+form > p {
+    text-align: center;
+}
+form > h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.sign-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+}
+.sign-in .sign-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+.sign-in .sign-up-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+    gap: 10px;
+}
+
+.sign-in .sign-up-text span,
+.sign-in .sign-up-text a,
+.password-update-text a {
+    font-size: 12px;
+}
+.sign-in .sign-up-text a,
+.password-update-text a{
+    color: gray;
+    text-decoration: none;
+}
+.sign-in input {
+    height: 40px;
+    padding-left: 14px;
+    border-radius: 5px;
+    border: 1px solid #8e8383;
+}
+.sign-in button {
+    width: 100%;
+    height: 50px;
+    margin-top: 25px;
+    border-radius: 5px;
+    background-color: black;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+}
+.line {
+    width: 100%;
+    padding-top: 30px;
+}
+.line p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.line p::before {
+    content: '';
+    display: block;
+    width: 42%;
+    height: 1px;
+    background-color: #000;
+}
+.line p::after {
+    content: '';
+    display: block;
+    width: 42%;
+    height: 1px;
+    background-color: #000;
+}
+.social-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    padding: 30px 0 50px 0;
+}
+.social-login img {
+    width: 40px;
+    height: 40px;
+}
+.password-update-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+    gap: 10px;
+    font-size: 12px;
+}
+.menu-button {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menu button {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background-color: transparent;
+}
+
+.menu button:hover {
+    background-color: #f1f1f1;
+}
+.menu button img {
+    float: left; /* 이미지를 왼쪽으로 이동 */
+    width: 15px;
+    height: 15px;
+}
+.menu-button button{
+    background-color: white; /* 배경색 */
+    color: black; /* 텍스트 색상 */
+    padding: 10px 20px; /* 안쪽 여백 */
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 상태 표시 */
+    border-radius: 5px; /* 테두리 반경 */;
+}
+.menu-button button:hover {
+    background-color: whitesmoke; /* 버튼에 마우스를 올렸을 때 배경색 변경 */
+}
+#login_menuContainer{
+    top: 10px;
+}#calendarLink{
+    position: relative;
+    top: -16px;
+}
+a {
+    text-align: center;
+}
+/*!* 팝업 스타일 *!
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; !* 팝업 너비 *!
+    max-width: 100%; !* 팝업 최대 너비 *!
+    height: auto; !* 자동 높이 조정 *!
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+!* 팝업 내부 스타일 *!
+.popup form {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+!* 팝업 닫기 버튼 스타일 *!
+.popup .close {
+    margin-left: auto;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.popup .close:hover,
+.popup .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}*/
